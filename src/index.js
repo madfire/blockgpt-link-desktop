@@ -282,7 +282,7 @@ const devToolKey = ((process.platform === 'darwin') ?
 
 const createWindow = () => {
     mainWindow = new BrowserWindow({
-        icon: path.join(__dirname, './icon/OpenBlock-Link.ico'),
+        icon: path.join(__dirname, './icon/hx-logo.ico'),
         width: 400,
         height: 400,
         center: true,
@@ -368,8 +368,8 @@ const createWindow = () => {
     resourceServer.listen();
 
 
-    appTray = new Tray(nativeImage.createFromPath(path.join(__dirname, './icon/OpenBlock-Link.ico')));
-    appTray.setToolTip('Openblock Link');
+    appTray = new Tray(nativeImage.createFromPath(path.join(__dirname, './icon/hx-logo.ico')));
+    appTray.setToolTip('HaoXueblock Link');
     appTray.setContextMenu(Menu.buildFromTemplate(makeTrayMenu(locale)));
 
     appTray.on('click', () => {
