@@ -1,8 +1,8 @@
 {
-  "name": "haoxueblock-link-desktop",
-  "productName": "HaoXueBlock Link",
-  "version": "1.0.0",
-  "description": "HaoXueBlock link desktop",
+  "name": "hxblock-link-desktop",
+  "productName": "HXBlock Link",
+  "version": "1.0.1",
+  "description": "HXBlock link desktop",
   "main": "src/index.js",
   "author": "haoxuekeji xiaoyingzi",
   "license": "MIT",
@@ -42,9 +42,9 @@
   "dependencies": {
     "del": "^6.0.0",
     "electron-progressbar": "^2.0.1",
-    "openblock-l10n": "^3.10.20211007020944",
-    "openblock-link": "git+https://github.com/haoxuekeji/openblock-link.git",
-    "openblock-resource": "git+https://github.com/haoxuekeji/openblock-resource.git",
+    "hxblock-l10n": "^3.10.0",
+    "openblock-link": "git+https://github.com/haoxuekeji/openblock-link.git#main-haoxue",
+    "openblock-resource": "git+https://github.com/haoxuekeji/openblock-resource.git#main-haoxue",
     "os-locale": "^5.0.0",
     "node-localstorage": "^2.2.1"
   },
@@ -53,6 +53,7 @@
     "compare-versions": "^3.6.0",
     "electron": "^8.5.5",
     "electron-builder": "^22.9.1",
+    "electron-rebuild": "^3.2.3",
     "eslint": "^5.16.0",
     "eslint-config-scratch": "^5.0.0",
     "format-message": "^6.2.3",

@@ -34,8 +34,8 @@ jobs:
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: OpenBlockLink-win-x64.exe
-          path: dist/OpenBlock*Setup.exe
+          name: HXBlockLink-win-x64.exe
+          path: dist/HXBlock*Setup.exe
           retention-days: 1
 
   build-windows32:
@@ -60,8 +60,8 @@ jobs:
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: OpenBlockLink-win-x86.exe
-          path: dist/OpenBlock*Setup.exe
+          name: HXBlockLink-win-x86.exe
+          path: dist/HXBlock*Setup.exe
           retention-days: 1
 
   build-mac:
@@ -87,8 +87,8 @@ jobs:
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: OpenBlockLink-mac.dmg
-          path: dist/OpenBlock*.dmg
+          name: HXBlockLink-mac.dmg
+          path: dist/HXBlock*.dmg
           retention-days: 1
 
   create-release:
@@ -113,7 +113,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ steps.tag.outputs.tag }}
-          release_name: OpenBlock Link ${{ steps.tag.outputs.tag }}
+          release_name: HXBlock Link ${{ steps.tag.outputs.tag }}
           body: |
             - **New feature**
 
@@ -134,8 +134,8 @@ jobs:
       - name: Zip win x64 file
         uses: papeloto/action-zip@v1
         with:
-            files: OpenBlockLink-win-x64.exe
-            dest: OpenBlockLink-win-x64.zip
+            files: HXBlockLink-win-x64.exe
+            dest: HXBlockLink-win-x64.zip
 
       - name: Relase Windows x64 package
         uses: actions/upload-release-asset@v1
@@ -143,16 +143,16 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./OpenBlockLink-win-x64.zip
-          asset_name: OpenBlockLink-${{ steps.package-version.outputs.current-version }}-win-x64.zip
+          asset_path: ./HXBlockLink-win-x64.zip
+          asset_name: HXBlockLink-${{ steps.package-version.outputs.current-version }}-win-x64.zip
           asset_content_type: application/zip
 
       # Windows x86 Release
       - name: Zip win x86 file
         uses: papeloto/action-zip@v1
         with:
-            files: OpenBlockLink-win-x86.exe
-            dest: OpenBlockLink-win-x86.zip
+            files: HXBlockLink-win-x86.exe
+            dest: HXBlockLink-win-x86.zip
 
       - name: Relase Windows x64 package
         uses: actions/upload-release-asset@v1
@@ -160,16 +160,16 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./OpenBlockLink-win-x86.zip
-          asset_name: OpenBlockLink-${{ steps.package-version.outputs.current-version }}-win-x86.zip
+          asset_path: ./HXBlockLink-win-x86.zip
+          asset_name: HXBlockLink-${{ steps.package-version.outputs.current-version }}-win-x86.zip
           asset_content_type: application/zip
 
       # Mac Release
       - name: Zip mac file
         uses: papeloto/action-zip@v1
         with:
-            files: OpenBlockLink-mac.dmg
-            dest: OpenBlockLink-mac.zip
+            files: HXBlockLink-mac.dmg
+            dest: HXBlockLink-mac.zip
 
       - name: Relase Mac package
         uses: actions/upload-release-asset@v1
@@ -177,13 +177,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./OpenBlockLink-mac.zip
-          asset_name: OpenBlockLink-${{ steps.package-version.outputs.current-version }}-mac.zip
+          asset_path: ./HXBlockLink-mac.zip
+          asset_name: HXBlockLink-${{ steps.package-version.outputs.current-version }}-mac.zip
           asset_content_type: application/zip
 
       # Checksum Release
       - name: Checksum
-        run: sha256sum OpenBlockLink-*.zip >> checksums.txt
+        run: sha256sum HXBlockLink-*.zip >> checksums.txt
 
       - uses: actions/upload-release-asset@v1
         env:

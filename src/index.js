@@ -13,7 +13,7 @@ const OpenblockResourceServer = require('openblock-resource');
 const ProgressBar = require('electron-progressbar');
 
 const formatMessage = require('format-message');
-const locales = require('openblock-l10n/locales/link-desktop-msgs');
+const locales = require('hxblock-l10n/locales/link-desktop-msgs');
 const osLocale = require('os-locale');
 
 const {productName, version} = require('../package.json');

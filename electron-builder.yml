@@ -3,8 +3,8 @@ directories:
   output: dist
 extraResources: ["tools", "external-resources", 'firmwares', "statics", "drivers"]
 
-appId: 'openblock.cc.openblock-link'
-productName: "OpenBlock Link"
+appId: 'haoxuekeji.com.hxblock-link'
+productName: "HXBlock Link"
 publish: # empty provider list = don't publish
 
 mac:
@@ -12,14 +12,14 @@ mac:
   entitlements: buildResources/entitlements.mac.plist
   gatekeeperAssess: true
   hardenedRuntime: true
-  icon: buildResources/OpenBlock-Link.icns
+  icon: buildResources/hx-logo.icns
   provisioningProfile: embedded.provisionprofile
-  artifactName: "OpenBlock Link ${version}.${ext}"
+  artifactName: "HXBlock Link ${version}.${ext}"
   target:
     - dmg
     # - mas
 dmg:
-  title: "OpenBlock Link ${version}"
+  title: "HXBlock Link ${version}"
 # mas:
 #   category: public.app-category.education
 #   entitlements: buildResources/entitlements.mas.plist
@@ -28,18 +28,18 @@ dmg:
 #   icon: buildResources/OpenBlock-Link.icns
 
 win:
-  icon: buildResources/OpenBlock-Link.ico
+  icon: buildResources/hx-logo.ico
   target:
     # - appx
     - nsis
 # appx:
-#   identityName: OpenBlock.OpenBlockLinkDesktop
-#   publisherDisplayName: "OpenBlock"
+#   identityName: HXBlock.HXlockLinkDesktop
+#   publisherDisplayName: "HXBlock"
 #   publisher: "CN=2EC43DF1-469A-4119-9AB9-568A0A1FF65F"
-#   artifactName: "OpenBlock Link Desktop ${version}.${ext}"
+#   artifactName: "HXBlock Link Desktop ${version}.${ext}"
 nsis:
   oneClick: false # allow user to choose per-user or per-machine
   allowToChangeInstallationDirectory: true
   include: buildResources/installer.nsh
 #   license: LICENSE
-  artifactName: "OpenBlock Link ${version} Setup.${ext}"
+  artifactName: "HXBlock Link ${version} Setup.${ext}"
