@@ -369,7 +369,7 @@ const createWindow = () => {
 
 
     appTray = new Tray(nativeImage.createFromPath(path.join(__dirname, './icon/hx-logo.ico')));
-    appTray.setToolTip('HaoXueblock Link');
+    appTray.setToolTip('HXblock Link');
     appTray.setContextMenu(Menu.buildFromTemplate(makeTrayMenu(locale)));
 
     appTray.on('click', () => {
