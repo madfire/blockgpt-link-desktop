@@ -11,7 +11,7 @@
     "i18n:src": "mkdirp translations && format-message extract --out-file translations/en.json src/**.js",
     "i18n:push": "tx-push-src openblock-editor link-desktop translations/en.json",
     "fetch:drivers": "rimraf ./drivers && node scripts/download-driver.js",
-    "fetch:exts": "rimraf ./external-resources && node ./node_modules/openblock-resource/script/download.js",
+    "fetch:exts": "rimraf ./external-resources && node ./node_modules/openblock-resource/script/download.js  --repo=haoxuekeji/external-resources",
     "fetch:firmwares": "rimraf ./firmwares && node ./node_modules/openblock-link/script/download-firmwares.js",
     "fetch:tools": "rimraf ./tools && node ./node_modules/openblock-link/script/download-tools.js",
     "fetch:all": "npm run fetch:drivers && npm run fetch:exts && npm run fetch:firmwares && npm run fetch:tools",
@@ -42,7 +42,7 @@
   "dependencies": {
     "del": "^6.0.0",
     "electron-progressbar": "^2.0.1",
-    "hxblock-l10n": "^3.10.0",
+    "hxblock-l10n": "latest",
     "openblock-link": "git+https://github.com/haoxuekeji/openblock-link.git#main-haoxue",
     "openblock-resource": "git+https://github.com/haoxuekeji/openblock-resource.git#main-haoxue",
     "os-locale": "^5.0.0",
@@ -51,8 +51,8 @@
   "devDependencies": {
     "babel-eslint": "^10.0.1",
     "compare-versions": "^3.6.0",
-    "electron": "^8.5.5",
-    "electron-builder": "^22.9.1",
+    "electron": "^15.3.1",
+    "electron-builder": "^22.13.1",
     "electron-rebuild": "^3.2.3",
     "eslint": "^5.16.0",
     "eslint-config-scratch": "^5.0.0",

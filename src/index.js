@@ -33,6 +33,7 @@ let dataPath;
 let makeTrayMenu = () => {};
 
 const showOperationFailedMessageBox = err => {
+    console.log(err)
     dialog.showMessageBox({
         type: 'error',
         buttons: ['Ok'],
@@ -362,7 +363,7 @@ const createWindow = () => {
     // start link server
     const link = new OpenBlockLink(dataPath, path.join(resourcePath, 'tools'));
     link.listen();
-
+    console.log(dataPath, resourcePath)
     // start resource server
     resourceServer = new OpenblockResourceServer(dataPath, path.join(resourcePath, 'external-resources'));
     resourceServer.listen();
