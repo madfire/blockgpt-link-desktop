@@ -58,10 +58,10 @@ const handleClickLanguage = l => {
 
 
 const checkUpdate = (alertLatest = true) => {
-    resourceServer.checkUpdate(locale)
+    resourceServer.checkUpdate()
         .then(info => {
             appTray.setContextMenu(Menu.buildFromTemplate(makeTrayMenu(locale, false)));
-            if (info) {
+            if (info.updateble) {
                 const rev = dialog.showMessageBoxSync({
                     type: 'question',
                     buttons: [
@@ -81,10 +81,10 @@ const checkUpdate = (alertLatest = true) => {
                         id: 'index.messageBox.newExternalResource',
                         default: 'New external resource version detected',
                         description: 'Label for new external resource version detected'
-                    })} : ${info.version}`,
+                    })} : ${info.latestVersion}`,
                     // Use 100 spaces to prevent the message box from being collapsed
                     // under windows, making the message box very ugly.
-                    detail: `${' '.repeat(100)}\n${info.describe}`
+                    detail: `${' '.repeat(100)}\n${JSON.stringify(info.message)}`
                 });
                 if (rev === 1) {
                     const progressBarPhase = {
@@ -115,7 +115,7 @@ const checkUpdate = (alertLatest = true) => {
                         clearInterval(downloadInterval);
                     });
 
-                    resourceServer.upgrade(state => {
+                    resourceServer.update(state => {
                         if (state.phase === 'downloading') {
                             if (progressBar) {
                                 progressBar.value = progressBarPhase.downloading;
@@ -343,6 +343,7 @@ const createWindow = () => {
     // if current version is newer then cache log, delet the data cache dir and write the
     // new version into the cache file.
     const oldVersion = nodeStorage.getItem('version');
+    console.log(oldVersion)
     if (oldVersion) {
         if (compareVersions.compare(appVersion, oldVersion, '>')) {
             if (fs.existsSync(dataPath)) {
@@ -366,7 +367,16 @@ const createWindow = () => {
     console.log(dataPath, resourcePath)
     // start resource server
     resourceServer = new OpenblockResourceServer(dataPath, path.join(resourcePath, 'external-resources'));
-    resourceServer.listen();
+    //resourceServer.listen();
+
+    resourceServer.initializeResources()
+    .then(() => {
+        resourceServer.listen();
+    })
+    .catch(e => {
+        // Delet error cache dir and exit
+        //this.clearCache(false);
+    });
 
 
     appTray = new Tray(nativeImage.createFromPath(path.join(__dirname, './icon/hx-logo.ico')));

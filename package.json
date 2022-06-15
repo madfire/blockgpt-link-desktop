@@ -1,7 +1,7 @@
 {
   "name": "hxblock-link-desktop",
   "productName": "HXBlock Link",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "HXBlock link desktop",
   "main": "src/index.js",
   "author": "haoxuekeji xiaoyingzi",
