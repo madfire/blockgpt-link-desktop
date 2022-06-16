@@ -23,8 +23,8 @@ ${StrRep}
     StrCmp $R0 "" 0 done
     StrCmp $R1 "" 0 done
 
-    WriteRegExpandStr HKLM "${INSTALL_REGISTRY_KEY}" InstallLocation "C:\OpenBlock Link"
-    WriteRegExpandStr HKCU "${INSTALL_REGISTRY_KEY}" InstallLocation "C:\OpenBlock Link"
+    WriteRegExpandStr HKLM "${INSTALL_REGISTRY_KEY}" InstallLocation "C:\HXBlock Link"
+    WriteRegExpandStr HKCU "${INSTALL_REGISTRY_KEY}" InstallLocation "C:\HXBlock Link"
 
 done:
     ${If} ${RunningX64}
