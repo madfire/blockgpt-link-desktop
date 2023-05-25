@@ -52,7 +52,7 @@
     "babel-eslint": "^10.0.1",
     "compare-versions": "^3.6.0",
     "electron": "^15.3.1",
-    "electron-builder": "^22.13.1",
+    "electron-builder": "^23.0.2",
     "electron-rebuild": "^3.2.3",
     "eslint": "^5.16.0",
     "eslint-config-scratch": "^5.0.0",
