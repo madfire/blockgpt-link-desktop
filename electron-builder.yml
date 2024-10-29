@@ -3,8 +3,8 @@ directories:
   output: dist
 extraResources: ["tools", "external-resources", 'firmwares', "statics", "drivers"]
 
-appId: 'haoxuekeji.com.hxblock-link'
-productName: "HXBlock Link"
+appId: 'madfire.blockgpt-link'
+productName: "BlockGPT Link"
 publish: # empty provider list = don't publish
 
 mac:
@@ -12,14 +12,14 @@ mac:
   entitlements: buildResources/entitlements.mac.plist
   gatekeeperAssess: true
   hardenedRuntime: true
-  icon: buildResources/hx-logo.icns
+  icon: buildResources/BlockGPT-Link.icns
   provisioningProfile: embedded.provisionprofile
-  artifactName: "HXBlock Link ${version}.${ext}"
+  artifactName: "BlockGPT Link ${version}.${ext}"
   target:
     - dmg
     # - mas
 dmg:
-  title: "HXBlock Link ${version}"
+  title: "BlockGPT Link ${version}"
 # mas:
 #   category: public.app-category.education
 #   entitlements: buildResources/entitlements.mas.plist
