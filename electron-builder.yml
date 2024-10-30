@@ -28,7 +28,7 @@ dmg:
 #   icon: buildResources/OpenBlock-Link.icns
 
 win:
-  icon: buildResources/hx-logo.ico
+  icon: buildResources/BlockGPT-Link.ico
   target:
     # - appx
     - nsis
@@ -42,4 +42,4 @@ nsis:
   allowToChangeInstallationDirectory: true
   include: buildResources/installer.nsh
 #   license: LICENSE
-  artifactName: "HXBlock Link ${version} Setup.${ext}"
+  artifactName: "BlockGPT Link ${version} Setup.${ext}"
