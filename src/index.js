@@ -379,8 +379,8 @@ const createWindow = () => {
     });
 
 
-    appTray = new Tray(nativeImage.createFromPath(path.join(__dirname, './icon/hx-logo.ico')));
-    appTray.setToolTip('HXblock Link');
+    appTray = new Tray(nativeImage.createFromPath(path.join(__dirname, './icon/iconTemplate.png')));
+    appTray.setToolTip('BlockGPT Link');
     appTray.setContextMenu(Menu.buildFromTemplate(makeTrayMenu(locale)));
 
     appTray.on('click', () => {
