@@ -283,7 +283,7 @@ const devToolKey = ((process.platform === 'darwin') ?
 
 const createWindow = () => {
     mainWindow = new BrowserWindow({
-        icon: path.join(__dirname, './icon/hx-logo.ico'),
+        icon: path.join(__dirname, './icon/BlockGPT-Link.ico'),
         width: 400,
         height: 400,
         center: true,
@@ -379,7 +379,7 @@ const createWindow = () => {
     });
 
 
-    appTray = new Tray(nativeImage.createFromPath(path.join(__dirname, './icon/iconTemplate.png')));
+    appTray = new Tray(nativeImage.createFromPath(path.join(__dirname, './icon/BlockGPT-Link.ico')));
     appTray.setToolTip('BlockGPT Link');
     appTray.setContextMenu(Menu.buildFromTemplate(makeTrayMenu(locale)));
 
