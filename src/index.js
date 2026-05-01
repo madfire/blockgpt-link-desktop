@@ -379,7 +379,7 @@ const createWindow = () => {
     });
 
 
-    appTray = new Tray(nativeImage.createFromPath(path.join(__dirname, './icon/BlockGPT-Link.ico')));
+    appTray = new Tray(nativeImage.createFromPath(path.join(__dirname, './icon/BlockGPT-Link.icns')));
     appTray.setToolTip('BlockGPT Link');
     appTray.setContextMenu(Menu.buildFromTemplate(makeTrayMenu(locale)));
 

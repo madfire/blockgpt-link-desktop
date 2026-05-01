@@ -25,7 +25,7 @@ dmg:
 #   entitlements: buildResources/entitlements.mas.plist
 #   entitlementsInherit: buildResources/entitlements.mas.inherit.plist
 #   hardenedRuntime: false
-#   icon: buildResources/OpenBlock-Link.icns
+#   icon: buildResources/BlockGPT-Link.icns
 
 win:
   icon: buildResources/BlockGPT-Link.ico
@@ -33,10 +33,10 @@ win:
     # - appx
     - nsis
 # appx:
-#   identityName: HXBlock.HXlockLinkDesktop
-#   publisherDisplayName: "HXBlock"
+#   identityName: BlockGPT.BlockGPTLinkDesktop
+#   publisherDisplayName: "BlockGPT"
 #   publisher: "CN=2EC43DF1-469A-4119-9AB9-568A0A1FF65F"
-#   artifactName: "HXBlock Link Desktop ${version}.${ext}"
+#   artifactName: "BlockGPT Link Desktop ${version}.${ext}"
 nsis:
   oneClick: false # allow user to choose per-user or per-machine
   allowToChangeInstallationDirectory: true
