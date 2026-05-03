@@ -1,7 +1,44 @@
 directories:
   buildResources: buildResources
   output: dist
-extraResources: ["tools", "external-resources", 'firmwares', "statics", "drivers"]
+extraResources:
+  - from: tools
+    to: tools
+    filter:
+      - "**/*"
+      - "!**/.DS_Store"
+      - "!**/Thumbs.db"
+      - "!Arduino/staging/**"
+      - "!Arduino/tmp/**"
+      - "!Python/归档.zip"
+      - "!Arduino/packages/rp2040/**"
+      - "!Arduino/packages/esp8266/**"
+      - "!Arduino/package_rp2040_index.json"
+      - "!Arduino/package_esp8266com_index.json"
+  - from: external-resources
+    to: external-resources
+    filter:
+      - "**/*"
+      - "!**/.DS_Store"
+      - "!**/Thumbs.db"
+  - from: firmwares
+    to: firmwares
+    filter:
+      - "**/*"
+      - "!**/.DS_Store"
+      - "!**/Thumbs.db"
+  - from: statics
+    to: statics
+    filter:
+      - "**/*"
+      - "!**/.DS_Store"
+      - "!**/Thumbs.db"
+  - from: drivers
+    to: drivers
+    filter:
+      - "**/*"
+      - "!**/.DS_Store"
+      - "!**/Thumbs.db"
 
 appId: 'madfire.blockgpt-link'
 productName: "BlockGPT Link"
@@ -20,6 +57,7 @@ mac:
     # - mas
 dmg:
   title: "BlockGPT Link ${version}"
+  background: buildResources/screenshot.png
 # mas:
 #   category: public.app-category.education
 #   entitlements: buildResources/entitlements.mas.plist

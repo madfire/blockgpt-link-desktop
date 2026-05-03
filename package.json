@@ -1,7 +1,7 @@
 {
   "name": "blockgpt-link-desktop",
   "productName": "BlockGPT Link",
-  "version": "1.0.0",
+  "version": "2.0.1",
   "description": "Desktop companion app for local hardware connectivity in BlockGPT",
   "main": "src/index.js",
   "author": "BlockGPT Team",
@@ -19,8 +19,11 @@
     "start": "electron .",
     "build": "electron-builder",
     "build:pack": "electron-builder --dir",
-    "dist": "npm run clean && npm run fetch:all && electron-builder",
-    "dist32": "npm run clean && npm run fetch:all32 && electron-builder --ia32",
+    "ensure:assets": "node scripts/ensure-bundled-assets.js",
+    "prune:tools": "node scripts/prune-bundled-tools.js",
+    "dist": "npm run clean:dist && npm run ensure:assets && npm run prune:tools && electron-builder",
+    "dist32": "npm run clean:dist && npm run ensure:assets && npm run prune:tools && electron-builder --ia32",
+    "clean:dist": "rimraf ./dist",
     "clean": "rimraf ./dist ./external-resources ./tools ./firmwares ./drivers",
     "lint": "eslint ./src",
     "test": ""
@@ -40,8 +43,10 @@
   },
   "homepage": "https://github.com/madfire/blockgpt-link-desktop#readme",
   "dependencies": {
+    "compare-versions": "^3.6.0",
     "del": "^6.0.0",
     "electron-progressbar": "^2.0.1",
+    "format-message": "^6.2.3",
     "hxblock-l10n": "latest",
     "openblock-link": "git+https://github.com/madfire/blockgpt-link.git",
     "openblock-resource": "git+https://github.com/madfire/blockgpt-resource.git",
@@ -50,13 +55,11 @@
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
-    "compare-versions": "^3.6.0",
     "electron": "^15.3.1",
     "electron-builder": "^23.6.0",
     "electron-rebuild": "^3.2.3",
     "eslint": "^5.16.0",
     "eslint-config-scratch": "^5.0.0",
-    "format-message": "^6.2.3",
     "format-message-cli": "^6.2.3",
     "rimraf": "^3.0.2"
   }

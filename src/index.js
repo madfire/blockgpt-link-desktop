@@ -32,6 +32,117 @@ let resourcePath;
 let dataPath;
 let makeTrayMenu = () => {};
 
+const writeStartupLog = (...messages) => {
+    try {
+        const line = `[${new Date().toISOString()}] ${messages.map(message => {
+            if (typeof message === 'string') return message;
+            try {
+                return JSON.stringify(message);
+            } catch (error) {
+                return String(message);
+            }
+        }).join(' ')}\n`;
+        fs.appendFileSync(path.join(os.tmpdir(), 'blockgpt-link-startup.log'), line);
+    } catch (error) {
+        // ignore logging failures
+    }
+};
+
+const getWindowIconPath = () => (
+    process.platform === 'darwin' ?
+        path.join(__dirname, './icon/BlockGPT-Link.png') :
+        path.join(__dirname, './icon/BlockGPT-Link.ico')
+);
+
+const getDockIconPath = () => path.join(__dirname, './icon/BlockGPT-Link.png');
+
+const getTrayImage = () => {
+    const imagePath = process.platform === 'darwin' ?
+        path.join(__dirname, './icon/iconTemplate@2x.png') :
+        path.join(__dirname, './icon/BlockGPT-Link.ico');
+    const image = nativeImage.createFromPath(imagePath).resize({width: 20, height: 20, quality: 'best'});
+    if (process.platform === 'darwin') {
+        image.setTemplateImage(true);
+    }
+    return image;
+};
+
+const getSplashHtml = () => {
+    const electronVersion = process.versions['electron'.toLowerCase()];
+    const chromeVersion = process.versions['chrome'.toLowerCase()];
+    return `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>${productName}</title>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+    }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(160deg, #eef6ff 0%, #ddeaff 48%, #d6e5ff 100%);
+      color: #17314f;
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+    .app {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+      gap: 12px;
+      padding: 22px 18px 24px;
+    }
+    .logo {
+      width: 86px;
+      height: 86px;
+      border-radius: 22px;
+      box-shadow: 0 18px 36px rgba(43, 85, 154, 0.18);
+    }
+    h2 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.15;
+      color: #17314f;
+    }
+    .version {
+      color: #49607c;
+      font-size: 13px;
+      text-align: center;
+    }
+    .components {
+      margin-top: 4px;
+      color: #64809f;
+      font-size: 11px;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <img class="logo" alt="BlockGPT Link" src="file://${path.join(__dirname, 'icon', 'BlockGPT-Link.png')}">
+    <h2>${productName}</h2>
+    <div class="version">
+      <div>Version ${version}</div>
+      <div class="components">
+        <div>Electron ${electronVersion}</div>
+        <div>Chrome ${chromeVersion}</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>`;
+};
+
 const showOperationFailedMessageBox = err => {
     console.log(err)
     dialog.showMessageBox({
@@ -282,20 +393,26 @@ const devToolKey = ((process.platform === 'darwin') ?
 );
 
 const createWindow = () => {
+    writeStartupLog('createWindow: begin');
+    let didLoadWindowContent = false;
+    let fallbackTimer = null;
     mainWindow = new BrowserWindow({
-        icon: path.join(__dirname, './icon/BlockGPT-Link.ico'),
-        width: 400,
-        height: 400,
+        icon: getWindowIconPath(),
+        width: 340,
+        height: 320,
         center: true,
         resizable: false,
         fullscreenable: false,
+        backgroundColor: '#eef6ff',
         webPreferences: {
             nodeIntegration: true,
             enableRemoteModule: true
         }
     });
+    writeStartupLog('createWindow: BrowserWindow created');
 
-    mainWindow.loadFile('./src/index.html');
+    mainWindow.loadFile(path.join(__dirname, 'index.html'));
+    writeStartupLog('createWindow: loadFile scheduled', path.join(__dirname, 'index.html'));
     mainWindow.setMenu(null);
 
     if (locale === 'zh-CN') {
@@ -309,6 +426,27 @@ const createWindow = () => {
     });
 
     const webContents = mainWindow.webContents;
+    webContents.on('did-start-loading', () => writeStartupLog('webContents: did-start-loading'));
+    webContents.on('did-finish-load', () => {
+        didLoadWindowContent = true;
+        if (fallbackTimer) {
+            clearTimeout(fallbackTimer);
+            fallbackTimer = null;
+        }
+        writeStartupLog('webContents: did-finish-load');
+    });
+    webContents.on('did-fail-load', (event, code, desc, url, isMainFrame) => {
+        writeStartupLog('webContents: did-fail-load', {code, desc, url, isMainFrame});
+        if (isMainFrame && mainWindow && !mainWindow.isDestroyed()) {
+            mainWindow.loadURL(`data:text/html;charset=utf-8,${encodeURIComponent(getSplashHtml())}`);
+        }
+    });
+    webContents.on('render-process-gone', (event, details) => {
+        writeStartupLog('webContents: render-process-gone', details);
+        if (mainWindow && !mainWindow.isDestroyed()) {
+            mainWindow.loadURL(`data:text/html;charset=utf-8,${encodeURIComponent(getSplashHtml())}`);
+        }
+    });
     webContents.on('before-input-event', (event, input) => {
         if (input.code === devToolKey.code &&
             input.alt === devToolKey.alt &&
@@ -335,6 +473,13 @@ const createWindow = () => {
         );
     });
 
+    fallbackTimer = setTimeout(() => {
+        if (!didLoadWindowContent && mainWindow && !mainWindow.isDestroyed()) {
+            writeStartupLog('webContents: loading timeout, falling back to inline splash');
+            mainWindow.loadURL(`data:text/html;charset=utf-8,${encodeURIComponent(getSplashHtml())}`);
+        }
+    }, 2500);
+
     const userDataPath = electron.app.getPath('userData');
     dataPath = path.join(userDataPath, 'Data');
     const appPath = app.getAppPath();
@@ -360,26 +505,16 @@ const createWindow = () => {
     } else {
         resourcePath = path.join(appPath, '../');
     }
+    writeStartupLog('paths', {appPath, resourcePath, dataPath});
 
-    // start link server
-    const link = new OpenBlockLink(dataPath, path.join(resourcePath, 'tools'));
-    link.listen();
-    console.log(dataPath, resourcePath)
-    // start resource server
-    resourceServer = new OpenblockResourceServer(dataPath, path.join(resourcePath, 'external-resources'));
-    //resourceServer.listen();
+    if (process.platform === 'darwin' && app.dock) {
+        writeStartupLog('dock: setIcon', getDockIconPath());
+        app.dock.setIcon(getDockIconPath());
+    }
 
-    resourceServer.initializeResources()
-    .then(() => {
-        resourceServer.listen();
-    })
-    .catch(e => {
-        // Delet error cache dir and exit
-        //this.clearCache(false);
-    });
-
-
-    appTray = new Tray(nativeImage.createFromPath(path.join(__dirname, './icon/BlockGPT-Link.icns')));
+    writeStartupLog('tray: creating');
+    appTray = new Tray(getTrayImage());
+    writeStartupLog('tray: created');
     appTray.setToolTip('BlockGPT Link');
     appTray.setContextMenu(Menu.buildFromTemplate(makeTrayMenu(locale)));
 
@@ -395,6 +530,26 @@ const createWindow = () => {
     mainWindow.on('closed', () => {
         mainWindow = null;
     });
+
+    setImmediate(() => {
+        try {
+            writeStartupLog('link: starting');
+            const link = new OpenBlockLink(dataPath, path.join(resourcePath, 'tools'));
+            link.listen();
+            writeStartupLog('link: listening');
+        } catch (error) {
+            writeStartupLog('link: failed', error && error.stack ? error.stack : String(error));
+        }
+
+        try {
+            writeStartupLog('resource: creating');
+            resourceServer = new OpenblockResourceServer(dataPath, path.join(resourcePath, 'external-resources'));
+            resourceServer.listen();
+            writeStartupLog('resource: listening');
+        } catch (error) {
+            writeStartupLog('resource: failed', error && error.stack ? error.stack : String(error));
+        }
+    });
 };
 
 const gotTheLock = app.requestSingleInstanceLock();
@@ -409,7 +564,6 @@ if (gotTheLock) {
     });
     app.on('ready', () => {
         createWindow();
-        checkUpdate(false);
     });
 } else {
     app.quit();

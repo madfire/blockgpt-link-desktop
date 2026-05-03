@@ -10,11 +10,14 @@
     <link rel="stylesheet" type="text/css" href="index.css">
     <style>
         body {
-            background-color: #08e1cb;
+            background: linear-gradient(160deg, #eef6ff 0%, #ddeaff 48%, #d6e5ff 100%);
+            margin: 0;
+            min-height: 100vh;
+            overflow: hidden;
         }
 
         .splash {
-            color: white;
+            color: #17314f;
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
             font-size: xx-large;
             font-weight: bolder;
@@ -23,6 +26,11 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+        }
+
+        .app {
+            min-height: 100vh;
+            overflow: hidden;
         }
     </style>
 </head>
@@ -44,6 +52,30 @@
             </div>
         </div>
     </div>
+    <script>
+        (() => {
+            try {
+                const fs = require('fs');
+                const os = require('os');
+                const path = require('path');
+                const logPath = path.join(os.tmpdir(), 'blockgpt-link-renderer.log');
+                const write = message => fs.appendFileSync(logPath, `[${new Date().toISOString()}] ${message}\n`);
+                write('renderer: script start');
+                window.addEventListener('error', event => {
+                    write(`renderer: window error ${event.message || 'unknown'}`);
+                });
+                window.addEventListener('DOMContentLoaded', () => {
+                    write('renderer: DOMContentLoaded');
+                    document.body.setAttribute('data-renderer-ready', 'true');
+                });
+                window.addEventListener('load', () => {
+                    write('renderer: window load');
+                });
+            } catch (error) {
+                // ignore renderer logging failures
+            }
+        })();
+    </script>
 </body>
 
 </html>
