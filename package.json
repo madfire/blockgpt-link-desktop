@@ -1,7 +1,7 @@
 {
   "name": "blockgpt-link-desktop",
   "productName": "BlockGPT Link",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Desktop companion app for local hardware connectivity in BlockGPT",
   "main": "src/index.js",
   "author": "BlockGPT Team",
@@ -48,7 +48,7 @@
     "electron-progressbar": "^2.0.1",
     "format-message": "^6.2.3",
     "hxblock-l10n": "latest",
-    "openblock-link": "git+https://github.com/madfire/blockgpt-link.git",
+    "openblock-link": "git+https://github.com/madfire/blockgpt-link.git#mac",
     "openblock-resource": "git+https://github.com/madfire/blockgpt-resource.git",
     "os-locale": "^5.0.0",
     "node-localstorage": "^2.2.1"
